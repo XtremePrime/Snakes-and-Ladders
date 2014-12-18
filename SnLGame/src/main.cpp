@@ -1,10 +1,12 @@
 #include <iostream>
 #include <SFML/graphics.hpp>
 
+#include "game.h"
+
 int main()
 {
-    sf::RenderWindow window;
-    auto s = 5;
-    std::cout << "Hello!";
+	Game game(860, 640);
+	game.run();
+
     return 0;
 }
