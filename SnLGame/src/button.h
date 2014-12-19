@@ -12,8 +12,11 @@ private:
 	sf::Text text;
 	sf::Rect<int> box;
 	sf::Font font;
+
+	sf::Texture txr;
+	sf::Sprite spr;
 public:
-	Button(std::string, int, int, int, int);
+	void init(const std::string, int, int, int, int);
 	bool was_clicked(sf::Vector2i);
 	void render(sf::RenderWindow& window);
 

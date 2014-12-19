@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "player.h"
+#include "button.h"
 
 class Game
 {
@@ -32,6 +33,8 @@ private:
     State game_state;
 
     //- Buttons
+    Button quit_btn;
+    Player player;
 
     void handle_events();
     void update();

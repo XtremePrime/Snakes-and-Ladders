@@ -18,6 +18,9 @@ Game::Game(int w, int h)
 
 	//- Start in the menu
 	game_state = MENU;
+
+	//- Buttons
+	quit_btn.init("Quit", 600, 400, 40, 40);
 }
 
 /*Game::Game(int p, int w, int h)
@@ -53,7 +56,8 @@ void Game::update()
 		{
 			case MENU:
 			{
-
+				if(quit_btn.was_clicked(mouse_coords))
+					std::cout << "We made it!\n";
 			}break;
 			case GAME:
 			{
@@ -75,8 +79,8 @@ void Game::render()
 	window.draw(bg_spr);
 
 	if(game_state == MENU){
-
-	}else if(game_STATE == GAME){
+		quit_btn.render(window);
+	}else if(game_state == GAME){
 
 	}
 	
