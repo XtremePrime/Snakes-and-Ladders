@@ -42,7 +42,13 @@
 		<Linker>
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="src/button.cpp" />
+		<Unit filename="src/button.h" />
+		<Unit filename="src/game.cpp" />
+		<Unit filename="src/game.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/player.cpp" />
+		<Unit filename="src/player.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

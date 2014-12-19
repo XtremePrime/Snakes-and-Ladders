@@ -14,7 +14,10 @@ Game::Game(int w, int h)
 	bg_spr.setScale((float)(width-200)/1792, (float)(height)/1350);
 
 	//- Setup font
-	font.loadFromFile("res/PressStart2P.ttf")
+	font.loadFromFile("res/PressStart2P.ttf");
+
+	//- Start in the menu
+	game_state = MENU;
 }
 
 /*Game::Game(int p, int w, int h)
@@ -40,6 +43,25 @@ Game::Game(int w, int h)
 
 void Game::update()
 {
+	//- Always update mouse coords
+	mouse_coords = sf::Mouse::getPosition(window);
+
+	//- Mouse button clicks
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		switch(game_state)
+		{
+			case MENU:
+			{
+
+			}break;
+			case GAME:
+			{
+
+			}break;
+		}
+	}
+
 	//- Quit game
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
@@ -50,9 +72,14 @@ void Game::update()
 
 void Game::render()
 {
-	//- TODO only render stuff when inside state
 	window.draw(bg_spr);
 
+	if(game_state == MENU){
+
+	}else if(game_STATE == GAME){
+
+	}
+	
 	window.display();
 	window.clear();
 }
