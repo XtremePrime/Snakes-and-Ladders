@@ -1,14 +1,6 @@
 #include "player.h"
 
-Player::Player()
-{
-	name = "";
-	pos = 0;
-	wins = 0; 
-	losses = 0;
-}
-
-Player::Player(std::string n, int p, int w, int l)
+void Player::init(std::string n="#ERROR", int p=-1, int w=-1, int l=-1)
 {
 	name = n;
 	pos = p;

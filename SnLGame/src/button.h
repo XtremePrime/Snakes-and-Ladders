@@ -10,6 +10,7 @@ class Button
 private:
 	//std::string msg;
 	sf::Text text;
+	sf::RectangleShape rect;
 	sf::Rect<int> box;
 	sf::Font font;
 

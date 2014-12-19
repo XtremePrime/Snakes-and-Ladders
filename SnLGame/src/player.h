@@ -11,8 +11,7 @@ private:
 	std::string name;
 	int pos, wins, losses;
 public:
-	Player();
-	Player(std::string, int, int, int);
+	void init(std::string, int, int, int);
 	void move(int);
 
 	int get_pos(){return pos;}

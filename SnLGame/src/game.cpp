@@ -5,11 +5,15 @@ Game::Game(int w, int h)
 	width = w; height = h;
 
 	//- Setup window
-	window.create(sf::VideoMode(width,height), "Snakes and Ladders", sf::Style::Titlebar | sf::Style::Close);
+	settings.antialiasingLevel = 8;
+	version = "1.0";
+	window.create(sf::VideoMode(width,height), "Snakes and Ladders v"+version, sf::Style::Titlebar | sf::Style::Close, settings);
     window.setFramerateLimit(60);
+
 
     //- Setup backgroud
 	bg_txr.loadFromFile("res/snakesandladders.png");
+	bg_txr.setSmooth(true);
 	bg_spr.setTexture(bg_txr);
 	bg_spr.setScale((float)(width-200)/1792, (float)(height)/1350);
 
@@ -20,7 +24,7 @@ Game::Game(int w, int h)
 	game_state = MENU;
 
 	//- Buttons
-	quit_btn.init("Quit", 600, 400, 40, 40);
+	quit_btn.init("Quit", 680, 490, 165, 40);
 }
 
 /*Game::Game(int p, int w, int h)
@@ -48,6 +52,8 @@ void Game::update()
 {
 	//- Always update mouse coords
 	mouse_coords = sf::Mouse::getPosition(window);
+	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		std::cout << "X:" << mouse_coords.x << "\tY:" << mouse_coords.y << "\n";
 
 	//- Mouse button clicks
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Left))

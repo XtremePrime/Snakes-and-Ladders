@@ -13,9 +13,11 @@ class Game
 {
 private:
 	//- Window stuff
+	sf::ContextSettings settings;
 	int width, height;
     sf::RenderWindow window;
     sf::Event event;
+    std::string version;
     
     //- Drawy stuff
     sf::Font font;
@@ -34,7 +36,7 @@ private:
 
     //- Buttons
     Button quit_btn;
-    Player player;
+    //Button two_players_btn;
 
     void handle_events();
     void update();
