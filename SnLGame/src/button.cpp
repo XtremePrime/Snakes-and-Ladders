@@ -10,16 +10,13 @@ void Button::init(const std::string msg, int x, int y, int w, int h)
 	text.setColor(sf::Color::Black);
 	text.setCharacterSize(11);
 
-	// box.left = x;
-	// box.top = y;
-	// box.width = w;
-	// box.height = h;
-
+	box.left = x;
+	box.top = y;
+	box.width = w;
+	box.height = h;
 
 	txr.loadFromFile("res/red_button.png");
 	txr.setSmooth(true);
-	// spr.setTexture(txr);
-	// spr.setScale((float)(w)/600, (float)(h)/292);
 
 	//- Setup RectangleShape
 	rect.setSize(sf::Vector2f((float)w, (float)h));

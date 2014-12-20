@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 #include "player.h"
 #include "button.h"
@@ -26,24 +28,32 @@ private:
 
     //- Player stuff
     std::vector<Player> players;
-    int nr_players;
+    int nr_players = 0;
     sf::Vector2i mouse_coords;
 
     //- Game stuff
+    int dice = 0;
+    int curr_player = -1;
     bool is_running = true;
     enum State{ MENU, GAME };
     State game_state;
 
     //- Buttons
+    Button two_player_btn;
+    Button three_player_btn;
+    Button four_player_btn;
+    Button roll_btn;
+    Button forfeit_btn;
     Button quit_btn;
     //Button two_players_btn;
 
     void handle_events();
     void update();
     void render();
+    void handle_buttons();
+    void quit();
 public:
 	Game(int, int); //- WIDTH, HEIGHT
-    //Game(int, int, int); //- PLAYERS, WIDTH, HEIGH
 
 	void run()
 	{
