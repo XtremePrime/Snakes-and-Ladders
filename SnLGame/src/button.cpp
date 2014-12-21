@@ -20,8 +20,8 @@ void Button::init(const std::string msg, int x, int y, int w, int h)
 
 	//- Setup RectangleShape
 	rect.setSize(sf::Vector2f((float)w, (float)h));
+	rect.setPosition((float)x, (float)y);
 	rect.setTexture(&txr, false);
-	rect.setPosition(x, y);
 }
 
 bool Button::was_clicked(sf::Vector2i mouse)

@@ -15,7 +15,6 @@ Game::Game(int w, int h)
 	window.create(sf::VideoMode(width,height), "Snakes and Ladders v"+version, sf::Style::Titlebar | sf::Style::Close, settings);
     window.setFramerateLimit(60);
 
-
     //- Setup backgroud
 	bg_txr.loadFromFile("res/snakesandladders.png");
 	bg_txr.setSmooth(true);
@@ -24,6 +23,12 @@ Game::Game(int w, int h)
 
 	//- Setup font
 	font.loadFromFile("res/PressStart2P.ttf");
+
+	//- Setup dice number text
+	dice_txt.setCharacterSize(20);
+	dice_txt.setColor(sf::Color::White);
+	dice_txt.setFont(font);
+	dice_txt.setPosition(BUTTON_X, 300);
 
 	//- Start in the menu
 	game_state = MENU;
@@ -39,14 +44,15 @@ Game::Game(int w, int h)
 
 void Game::update()
 {
-	//- Always update mouse coords
+	//- Update mouse coords
 	mouse_coords = sf::Mouse::getPosition(window);
+
+	for(int i = 0; i < nr_players; ++i)
+		players[i].update();
 
 	//- Quit game
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
 		quit();
-	}
 }
 
 void Game::render()
@@ -68,6 +74,8 @@ void Game::render()
 
 			for(int i = 0; i < nr_players; ++i)
 				players[i].render(window);
+
+			window.draw(dice_txt);
 		break;
 	}
 	
@@ -116,7 +124,8 @@ void Game::handle_buttons()
 			for(int i = 0; i < nr_players; ++i)
 			{
 				Player p;
-				p.init("Player #"+i, 1);
+				auto str = [=] () mutable -> std::string {std::ostringstream temp; temp<<i; return temp.str();}();
+				p.init("Player "+i, 1);
 				players.push_back(p);
 			}
 
@@ -126,12 +135,40 @@ void Game::handle_buttons()
 	else if(game_state == GAME)
 	{
 		if(roll_btn.was_clicked(mouse_coords)){
+			//- Generate+Print dice
 			dice = rand()%6+1;
-			std::cout << "dice: " << dice << "\n";
+			auto str = [=] () mutable -> std::string {std::ostringstream temp; temp<<dice; return temp.str();}();
+			dice_txt.setString(str);
+			
+			//- Move curr_player
+			players[curr_player].move(players[curr_player].get_pos() + dice);
+			std::cout << "\"Player " << curr_player << "\" rolled: " << dice << " (New player position:" << players[curr_player].get_pos() << ")\n"; 
+			
+			//- Check if player won
+			if(players[curr_player].get_pos() >= 100){
+				players[curr_player].set_state(1);
+				//players[curr_player].set_state(nr_finished_players++);
+			}
+
+			change_turn(curr_player);
 		}
-		else if(forfeit_btn.was_clicked(mouse_coords))
+		else if(forfeit_btn.was_clicked(mouse_coords)){
 			players[curr_player].set_state(-1); //- (-1) = Lost game
+			std::cout << "Player " << curr_player << " has forfeit!\n";
+			change_turn(curr_player);
+		}
+
 	}
+}
+
+void Game::change_turn(int& pl)
+{
+	do{
+		if(pl >= nr_players-1)
+			pl = 0;
+		else
+			pl++;
+	}while(players[pl].get_state() == -1);
 }
 
 void Game::quit()

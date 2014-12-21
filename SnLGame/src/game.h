@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <sstream>
 
 #include "player.h"
 #include "button.h"
@@ -25,6 +26,7 @@ private:
     sf::Font font;
     sf::Texture bg_txr;
     sf::Sprite bg_spr;
+    sf::Text dice_txt;
 
     //- Player stuff
     std::vector<Player> players;
@@ -33,7 +35,7 @@ private:
 
     //- Game stuff
     int dice = 0;
-    int curr_player = -1;
+    int curr_player = 0;
     bool is_running = true;
     enum State{ MENU, GAME };
     State game_state;
@@ -51,6 +53,7 @@ private:
     void update();
     void render();
     void handle_buttons();
+    void change_turn(int&);
     void quit();
 public:
 	Game(int, int); //- WIDTH, HEIGHT
