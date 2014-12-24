@@ -30,6 +30,13 @@ Game::Game(int w, int h)
 	dice_txt.setFont(font);
 	dice_txt.setPosition(BUTTON_X, 300);
 
+	//- Setup winner text
+	win_txt.setCharacterSize(20);
+	win_txt.setColor(sf::Color::White);
+	win_txt.setFont(font);
+	win_txt.setPosition(BUTTON_X, 50);
+
+
 	//- Start in the menu
 	game_state = MENU;
 
@@ -40,6 +47,7 @@ Game::Game(int w, int h)
     roll_btn.init("Roll dice", BUTTON_X, 510, BUTTON_WIDTH, BUTTON_HEIGHT);
     forfeit_btn.init("Forfeit", BUTTON_X, 560, BUTTON_WIDTH, BUTTON_HEIGHT);
 	quit_btn.init("Quit", BUTTON_X, 560, BUTTON_WIDTH, BUTTON_HEIGHT);
+	restart_btn.init("Restart", BUTTON_X, 510, BUTTON_WIDTH, BUTTON_HEIGHT);	
 }
 
 void Game::update()
@@ -50,7 +58,40 @@ void Game::update()
 	for(int i = 0; i < nr_players; ++i)
 		players[i].update();
 
-	//- Quit game
+	//- Check game over rules
+	if(game_state == GAME)
+	{
+		//One player is left
+		if(players_left == 1)
+		{
+			for(int i = 0; i < nr_players; ++i)
+			{
+				if(players[i].get_state() == 0)
+				{
+					winner_idx = i;
+					auto str = [=] () mutable -> std::string {std::ostringstream temp; temp<<i; return temp.str();}();
+					win_txt.setString("Winner:\nPlayer "+str);
+					break;
+				}
+			}
+			game_state = GAME_OVER;
+		}
+		//One player is at/over pos 100
+		for(int i = 0; i < nr_players; ++i)
+		{
+			if(players[i].get_pos() >= 100)
+			{
+				game_state = GAME_OVER;
+				winner_idx = i;
+				auto str = [=] () mutable -> std::string {std::ostringstream temp; temp<<i; return temp.str();}();
+				win_txt.setString("Winner:\nPlayer "+str);
+				game_state = GAME_OVER;
+				break;
+			}
+		}
+	}
+
+	//- Quit game on ESC
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		quit();
 }
@@ -76,6 +117,11 @@ void Game::render()
 				players[i].render(window);
 
 			window.draw(dice_txt);
+		break;
+		case GAME_OVER:
+			restart_btn.render(window);
+			quit_btn.render(window);
+			window.draw(win_txt);
 		break;
 	}
 	
@@ -119,6 +165,7 @@ void Game::handle_buttons()
 		}
 
 		//- Nr Players was selected
+		players_left = nr_players;
 		if(nr_players != 0)
 		{
 			for(int i = 0; i < nr_players; ++i)
@@ -154,10 +201,23 @@ void Game::handle_buttons()
 		}
 		else if(forfeit_btn.was_clicked(mouse_coords)){
 			players[curr_player].set_state(-1); //- (-1) = Lost game
+			players_left--;
 			std::cout << "Player " << curr_player << " has forfeit!\n";
 			change_turn(curr_player);
 		}
 
+	}
+	else if(game_state == GAME_OVER)
+	{
+		if(restart_btn.was_clicked(mouse_coords)){
+			game_state = MENU;
+			players_left == -1;
+			nr_players = 0;
+		}
+		else if(quit_btn.was_clicked(mouse_coords)){
+			quit();
+			return;
+		}
 	}
 }
 

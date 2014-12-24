@@ -27,18 +27,20 @@ private:
     sf::Texture bg_txr;
     sf::Sprite bg_spr;
     sf::Text dice_txt;
+    sf::Text win_txt;
 
     //- Player stuff
     std::vector<Player> players;
-    int nr_players = 0;
+    int nr_players = 0, players_left;
     sf::Vector2i mouse_coords;
 
     //- Game stuff
     int dice = 0;
     int curr_player = 0;
     bool is_running = true;
-    enum State{ MENU, GAME };
+    enum State{ MENU, GAME, GAME_OVER };
     State game_state;
+    int winner_idx;
 
     //- Buttons
     Button two_player_btn;
@@ -47,6 +49,7 @@ private:
     Button roll_btn;
     Button forfeit_btn;
     Button quit_btn;
+    Button restart_btn;
     //Button two_players_btn;
 
     void handle_events();
